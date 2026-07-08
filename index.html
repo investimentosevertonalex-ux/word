@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+  <title>Word</title>
+  <meta name="theme-color" content="#2b579a" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Word" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="app.css" />
+</head>
+<body>
+  <header class="titlebar">
+    <div class="tb-left">
+      <span class="wicon">W</span>
+      <span class="tb-title">Documento1 &middot; Word</span>
+    </div>
+    <button id="btn-settings" class="gear" title="Configuracoes" aria-label="Configuracoes"><i class="fa-solid fa-gear" aria-hidden="true"></i></button>
+  </header>
+
+  <nav class="tabs">
+    <button id="tab-arquivo" class="tab file" title="Novo documento">Arquivo</button>
+    <span class="tab on">Página inicial</span>
+    <span class="tab">Inserir</span>
+    <span class="tab">Design</span>
+    <span class="tab">Layout</span>
+    <span class="tab">Revisão</span>
+    <span class="tab">Exibir</span>
+  </nav>
+
+  <section class="ribbon" aria-hidden="true">
+    <div class="grp">
+      <div class="grow"><button class="paste"><i class="fa-solid fa-paste"></i><span>Colar</span></button></div>
+      <div class="glabel">Transferência</div>
+    </div>
+    <div class="sep"></div>
+    <div class="grp">
+      <div class="grow">
+        <span class="fbox">Calibri <i class="fa-solid fa-caret-down"></i></span>
+        <span class="fbox sm">11 <i class="fa-solid fa-caret-down"></i></span>
+      </div>
+      <div class="grow">
+        <button class="ic ltr" style="font-weight:500">N</button>
+        <button class="ic ltr" style="font-style:italic">I</button>
+        <button class="ic ltr" style="text-decoration:underline">S</button>
+        <button class="ic"><i class="fa-solid fa-highlighter"></i></button>
+        <button class="ic acolor">A</button>
+      </div>
+      <div class="glabel">Fonte</div>
+    </div>
+    <div class="sep"></div>
+    <div class="grp">
+      <div class="grow">
+        <button class="ic"><i class="fa-solid fa-list-ul"></i></button>
+        <button class="ic"><i class="fa-solid fa-list-ol"></i></button>
+        <button class="ic"><i class="fa-solid fa-indent"></i></button>
+        <button class="ic"><i class="fa-solid fa-text-height"></i></button>
+      </div>
+      <div class="grow">
+        <button class="ic"><i class="fa-solid fa-align-left"></i></button>
+        <button class="ic"><i class="fa-solid fa-align-center"></i></button>
+        <button class="ic"><i class="fa-solid fa-align-right"></i></button>
+        <button class="ic"><i class="fa-solid fa-align-justify"></i></button>
+      </div>
+      <div class="glabel">Parágrafo</div>
+    </div>
+    <div class="sep"></div>
+    <div class="grp">
+      <div class="grow">
+        <div class="thumb"><span>AaBbCcDd</span><small>Normal</small></div>
+        <div class="thumb"><span style="color:#2b579a;font-weight:500">AaBbCcDd</span><small>Título 1</small></div>
+      </div>
+      <div class="glabel">Estilos</div>
+    </div>
+  </section>
+
+  <main class="canvas">
+    <div class="page">
+      <div class="doc" id="doc"></div>
+      <div class="composer">
+        <div class="attachments" id="attachments"></div>
+        <div class="composer-row">
+          <button id="attach" class="attach" title="Anexar" aria-label="Anexar"><i class="fa-solid fa-paperclip" aria-hidden="true"></i></button>
+          <textarea id="input" rows="1" placeholder="" enterkeyhint="send"></textarea>
+          <button id="send" class="send" title="Enviar" aria-label="Enviar"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i></button>
+        </div>
+        <input type="file" id="file-input" multiple accept="image/png,image/jpeg,image/gif,image/webp,application/pdf,.txt,.md,.markdown,.csv,.json,.js,.ts,.py,.html,.css,.xml,.yml,.yaml,.sql,.log" style="display:none" />
+      </div>
+    </div>
+  </main>
+
+  <footer class="statusbar">
+    <div class="sb-left">
+      <span id="page-info">Página 1</span>
+      <span id="word-count">0 palavras</span>
+    </div>
+    <div class="sb-right"><span>Português (Brasil)</span></div>
+  </footer>
+
+  <div class="modal-overlay" id="overlay">
+    <div class="modal">
+      <div class="modal-head">
+        <h2>Configurações</h2>
+        <button class="modal-close" id="btn-close" aria-label="Fechar">&times;</button>
+      </div>
+      <div class="modal-body">
+        <label class="field-label" for="set-key">Chave da API do OpenRouter</label>
+        <input type="password" id="set-key" class="field" placeholder="sk-or-v1-..." autocomplete="off" />
+        <p class="hint">Pegue em openrouter.ai &rsaquo; Keys. Fica salva só neste aparelho.</p>
+
+        <label class="field-label" for="set-model">Modelo</label>
+        <input list="models-datalist" id="set-model" class="field" placeholder="~anthropic/claude-sonnet-latest" />
+        <datalist id="models-datalist"></datalist>
+
+        <label class="field-label" for="set-system">Instrução de sistema (opcional)</label>
+        <textarea id="set-system" class="field" rows="3" placeholder="Ex.: Responda em português, tom formal."></textarea>
+
+        <label class="field-label" for="set-temp">Temperatura: <span id="set-temp-val">0.7</span></label>
+        <input type="range" id="set-temp" min="0" max="2" step="0.1" value="0.7" class="range" />
+
+        <label class="field-label" for="set-effort">Esforço de raciocínio</label>
+        <select id="set-effort" class="field">
+          <option value="">Padrão do modelo</option>
+          <option value="none">Desligado</option>
+          <option value="minimal">Mínimo</option>
+          <option value="low">Baixo</option>
+          <option value="medium">Médio</option>
+          <option value="high">Alto</option>
+          <option value="xhigh">Máximo</option>
+        </select>
+        <p class="hint">Só afeta modelos com raciocínio (o-series, GPT-5, Gemini 3, Claude, Grok).</p>
+
+        <button class="refresh-btn" id="btn-refresh">Atualizar lista de modelos</button>
+        <span class="refresh-status" id="refresh-status"></span>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-secondary" id="btn-cancel">Cancelar</button>
+        <button class="btn-primary" id="btn-save">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
