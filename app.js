@@ -3,7 +3,6 @@ const $ = (id) => document.getElementById(id);
 const doc = $('doc');
 const scroller = document.querySelector('.canvas');
 const input = $('input');
-const attachBtn = $('attach');
 const fileInput = $('file-input');
 const attachmentsEl = $('attachments');
 const wordCount = $('word-count');
@@ -265,7 +264,6 @@ function autosize() { input.style.height = 'auto'; input.style.height = Math.min
 function newDoc() { messages = []; attachments = []; renderAttachments(); stream.raw = ''; stream.el = null; doc.innerHTML = ''; updateWordCount(); input.focus(); }
 
 // ---------- Eventos ----------
-attachBtn.addEventListener('click', () => fileInput.click());
 const btnBold = $('btn-bold');
 const composerEl = document.querySelector('.composer');
 if (btnBold && composerEl) {

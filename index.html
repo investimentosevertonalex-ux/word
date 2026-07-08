@@ -85,10 +85,10 @@
       <div class="composer">
         <div class="attachments" id="attachments"></div>
         <div class="composer-row">
-          <button id="attach" class="attach" title="Anexar" aria-label="Anexar"><i class="fa-solid fa-paperclip" aria-hidden="true"></i></button>
+          <label id="attach" class="attach" for="file-input" title="Anexar" aria-label="Anexar"><i class="fa-solid fa-paperclip" aria-hidden="true"></i></label>
           <textarea id="input" rows="1" placeholder="" enterkeyhint="send"></textarea>
         </div>
-        <input type="file" id="file-input" multiple accept="image/png,image/jpeg,image/gif,image/webp,application/pdf,.txt,.md,.markdown,.csv,.json,.js,.ts,.py,.html,.css,.xml,.yml,.yaml,.sql,.log" style="display:none" />
+        <input type="file" id="file-input" multiple accept="image/*,application/pdf,.txt,.md,.markdown,.csv,.json,.js,.ts,.py,.html,.css,.xml,.yml,.yaml,.sql,.log" class="vh" />
       </div>
     </div>
   </main>

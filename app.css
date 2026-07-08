@@ -139,3 +139,8 @@ body { display: flex; flex-direction: column; height: 100vh; height: 100dvh; ove
 /* toggle da caixa pelo N (negrito) */
 .composer.hidden { display: none; }
 .ic.active { background: #dfe7f5; color: var(--word-blue); }
+
+/* anexo confiavel no celular (label abre o seletor nativo) */
+.vh { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; pointer-events: none; }
+.attach { display: inline-flex; align-items: center; justify-content: center; color: #8a8a86; font-size: 18px; padding: 8px; min-width: 40px; min-height: 40px; cursor: pointer; }
+.attach:active { color: var(--word-blue); }
