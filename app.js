@@ -3,7 +3,6 @@ const $ = (id) => document.getElementById(id);
 const doc = $('doc');
 const scroller = document.querySelector('.canvas');
 const input = $('input');
-const sendBtn = $('send');
 const attachBtn = $('attach');
 const fileInput = $('file-input');
 const attachmentsEl = $('attachments');
@@ -96,9 +95,6 @@ function updateWordCount() {
 }
 function setSending(active) {
   stream.active = active;
-  const icon = sendBtn.querySelector('i');
-  if (active) { sendBtn.classList.add('stop'); if (icon) icon.className = 'fa-solid fa-stop'; }
-  else { sendBtn.classList.remove('stop'); if (icon) icon.className = 'fa-solid fa-paper-plane'; }
 }
 
 // ---------- Anexos ----------
@@ -269,8 +265,17 @@ function autosize() { input.style.height = 'auto'; input.style.height = Math.min
 function newDoc() { messages = []; attachments = []; renderAttachments(); stream.raw = ''; stream.el = null; doc.innerHTML = ''; updateWordCount(); input.focus(); }
 
 // ---------- Eventos ----------
-sendBtn.addEventListener('click', sendMessage);
 attachBtn.addEventListener('click', () => fileInput.click());
+const btnBold = $('btn-bold');
+const composerEl = document.querySelector('.composer');
+if (btnBold && composerEl) {
+  btnBold.classList.add('active');
+  btnBold.addEventListener('click', () => {
+    const hidden = composerEl.classList.toggle('hidden');
+    btnBold.classList.toggle('active', !hidden);
+    if (!hidden) input.focus();
+  });
+}
 fileInput.addEventListener('change', () => { addFiles(fileInput.files); fileInput.value = ''; });
 input.addEventListener('input', autosize);
 input.addEventListener('keydown', (e) => {
