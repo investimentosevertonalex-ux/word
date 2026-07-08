@@ -13,7 +13,7 @@ const setSystem = $('set-system');
 const setTemp = $('set-temp');
 const setTempVal = $('set-temp-val');
 const setEffort = $('set-effort');
-const modelsDatalist = $('models-datalist');
+const setModelPicker = $('set-model-picker');
 const refreshStatus = $('refresh-status');
 
 const OPENROUTER = 'https://openrouter.ai/api/v1/chat/completions';
@@ -227,6 +227,7 @@ function finishStream() {
 function openSettings() {
   setKey.value = config.apiKey || '';
   setModel.value = config.model || '';
+  syncPicker();
   setSystem.value = config.systemPrompt || '';
   setTemp.value = config.temperature != null ? config.temperature : 0.7;
   setTempVal.textContent = setTemp.value;
@@ -245,16 +246,31 @@ function saveSettings() {
   closeSettings();
   loadModels();
 }
+function syncPicker() {
+  const cur = (config.model || '').trim();
+  if (!cur) return;
+  if (![].some.call(setModelPicker.options, (o) => o.value === cur)) {
+    const o = document.createElement('option'); o.value = cur; o.textContent = cur;
+    setModelPicker.insertBefore(o, setModelPicker.firstChild);
+  }
+  setModelPicker.value = cur;
+}
 async function loadModels() {
+  const fallback = ['~anthropic/claude-sonnet-latest', '~openai/gpt-latest'];
+  let ids = [];
   try {
     const res = await fetch(MODELS_URL);
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-    const models = (data.data || []).map((m) => m.id).sort();
-    modelsDatalist.innerHTML = '';
-    for (const id of models) { const o = document.createElement('option'); o.value = id; modelsDatalist.appendChild(o); }
-    refreshStatus.textContent = models.length + ' modelos carregados.';
-  } catch (e) { refreshStatus.textContent = 'Nao foi possivel carregar a lista. Digite o slug manualmente.'; }
+    if (res.ok) { const data = await res.json(); ids = (data.data || []).map((m) => m.id).sort(); }
+  } catch (_e) {}
+  const list = [];
+  const cur = (config.model || '').trim();
+  if (cur) list.push(cur);
+  for (const f of fallback) if (!list.includes(f)) list.push(f);
+  for (const id of ids) if (!list.includes(id)) list.push(id);
+  setModelPicker.innerHTML = '';
+  for (const id of list) { const o = document.createElement('option'); o.value = id; o.textContent = id; setModelPicker.appendChild(o); }
+  if (cur) setModelPicker.value = cur;
+  refreshStatus.textContent = ids.length ? (ids.length + ' modelos na lista') : 'Lista online indisponivel - use os padroes ou cole um slug.';
 }
 
 // ---------- Textarea ----------
@@ -294,6 +310,7 @@ $('btn-refresh').addEventListener('click', () => { refreshStatus.textContent = '
 $('tab-arquivo').addEventListener('click', newDoc);
 overlay.addEventListener('click', (e) => { if (e.target === overlay) closeSettings(); });
 setTemp.addEventListener('input', () => { setTempVal.textContent = setTemp.value; });
+setModelPicker.addEventListener('change', () => { setModel.value = setModelPicker.value; });
 
 // ---------- Init ----------
 config = Object.assign(config, loadConfig());

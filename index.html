@@ -112,9 +112,10 @@
         <input type="password" id="set-key" class="field" placeholder="sk-or-v1-..." autocomplete="off" />
         <p class="hint">Pegue em openrouter.ai &rsaquo; Keys. Fica salva só neste aparelho.</p>
 
-        <label class="field-label" for="set-model">Modelo</label>
-        <input list="models-datalist" id="set-model" class="field" placeholder="~anthropic/claude-sonnet-latest" />
-        <datalist id="models-datalist"></datalist>
+        <label class="field-label" for="set-model-picker">Modelo</label>
+        <select id="set-model-picker" class="field"></select>
+        <input id="set-model" class="field" placeholder="ou cole um slug (ex.: openai/gpt-4o)" style="margin-top:8px" />
+        <p class="hint">Toque na lista para escolher, ou cole um slug de openrouter.ai/models.</p>
 
         <label class="field-label" for="set-system">Instrução de sistema (opcional)</label>
         <textarea id="set-system" class="field" rows="3" placeholder="Ex.: Responda em português, tom formal."></textarea>
